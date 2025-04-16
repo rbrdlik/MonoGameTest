@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -12,12 +13,17 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
     private Texture2D _playerTexture;
     private Player _player;
+    private Platform _platform;
+    private List<Platform> _platforms;
+    private List<Ground> _grounds;
+    private Random _random;
 
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
+        _random = new Random();
     }
 
     protected override void Initialize()
@@ -33,6 +39,11 @@ public class Game1 : Game
 
         _playerTexture = Content.Load<Texture2D>("spritesheet");
         _player = new Player(_playerTexture, new Vector2(0, 0), 32, 32);
+        GeneratePlatforms();
+        _grounds = new List<Ground>();
+        for(int i = -30; i < 760; i+=40){
+            _grounds.Add(new Ground(_playerTexture, new Vector2(i, 465)));
+        }
 
         // TODO: use this.Content to load your game content here
     }
@@ -55,10 +66,33 @@ public class Game1 : Game
         
         _spriteBatch.Begin();
         _player.Draw(_spriteBatch);
+        
+        foreach (var platform in _platforms)
+        {
+            platform.Draw(_spriteBatch);
+        }
+        
+        foreach (var ground in _grounds)
+        {
+            ground.Draw(_spriteBatch);
+        }
+        
         _spriteBatch.End();
 
         // TODO: Add your drawing code here
 
         base.Draw(gameTime);
+    }
+
+    public void GeneratePlatforms()
+    {
+        _platforms = new List<Platform>();
+        Random random = new Random();
+        int numberOfPlatforms = 10;
+        
+        for (int i = 0; i < numberOfPlatforms; i++)
+        {
+            _platforms.Add(new Platform(_playerTexture, new Vector2(random.Next(50, 750), random.Next(50, 750))));
+        }
     }
 }

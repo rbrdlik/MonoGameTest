@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -23,7 +24,7 @@ public class Player
         _position = position;
         _size = new int[] { width , height};
     }
-
+    
     public void Update(Viewport viewport)
     {
         KeyboardState keyboardState = Keyboard.GetState();
@@ -66,9 +67,10 @@ public class Player
         {
             _position.X -= _speed;
         }
+        // Skákání, pokud je na zemi
         if ((keyboardState.IsKeyDown(Keys.Space) || keyboardState.IsKeyDown(Keys.W)) && _position.Y >= WindowHeight - _size[1])
         {
-            _velocityY = -_speed * 3f;
+            _velocityY = -_speed * 3f; // Skok
         }
     }
 
