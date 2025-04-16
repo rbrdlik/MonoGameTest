@@ -10,6 +10,11 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
     private Texture2D _playerTexture;
 
+    private const float _gravity = 0.5f;
+    private float _velocityY = 0f;
+    private readonly float _playerSpeed = 5f;
+    private Vector2 _playerPosition = new Vector2(0, 0);
+
     private readonly int[] _playerSize = [32, 32]; // Vyska, Sirka
 
     public Game1()
@@ -48,11 +53,15 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
+        KeyboardState keyboardState = Keyboard.GetState();
         
         _spriteBatch.Begin();
-
+        
+        _velocityY += _gravity;
+        _playerPosition.Y += _velocityY;
+        
         Rectangle sourceRect = new Rectangle(0, 0, 8, 8);
-        Rectangle destRect = new Rectangle(0, 0, _playerSize[0], _playerSize[1]);
+        Rectangle destRect = new Rectangle((int) _playerPosition.X, (int) _playerPosition.Y, _playerSize[0], _playerSize[1]);
         _spriteBatch.Draw(_playerTexture, destRect, sourceRect, Color.White);
         
         _spriteBatch.End();
