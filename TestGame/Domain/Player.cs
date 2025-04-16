@@ -35,8 +35,7 @@ public class Player
         _aceleration = _gravity;
         _velocityY += _aceleration;
         _position.Y += _velocityY;
-
-        // Kolize se stěnami
+        
         if (_position.Y > WindowHeight - _size[1])
         {
             _position.Y = WindowHeight - _size[1];
@@ -57,8 +56,7 @@ public class Player
             _position.Y = 0;
             _velocityY = 0f;
         }
-
-        // Pohyb
+        
         if (keyboardState.IsKeyDown(Keys.D))
         {
             _position.X += _speed;
@@ -67,10 +65,9 @@ public class Player
         {
             _position.X -= _speed;
         }
-        // Skákání, pokud je na zemi
         if ((keyboardState.IsKeyDown(Keys.Space) || keyboardState.IsKeyDown(Keys.W)) && _position.Y >= WindowHeight - _size[1])
         {
-            _velocityY = -_speed * 3f; // Skok
+            _velocityY = -_speed * 4f;
         }
     }
 

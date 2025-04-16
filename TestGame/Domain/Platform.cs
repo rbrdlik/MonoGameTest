@@ -9,6 +9,9 @@ public class Platform
     private Texture2D _texture;
     private Vector2 _position;
     
+    public Rectangle BoundingBox => new Rectangle((int)_position.X + 30, (int)_position.Y, 90, 30);
+
+    
     public Platform(Texture2D texture, Vector2 position)
     {
         _texture = texture;

@@ -88,11 +88,37 @@ public class Game1 : Game
     {
         _platforms = new List<Platform>();
         Random random = new Random();
-        int numberOfPlatforms = 10;
+
+        int numberOfPlatforms = 15;
+        int platformWidth = 90;
+        int screenWidth = _graphics.PreferredBackBufferWidth;
+        int screenHeight = _graphics.PreferredBackBufferHeight;
+
+        int minHorizontalOffset = 100;
+        int maxHorizontalOffset = 200;
+
+        int minVerticalOffset = 80;
+        int maxVerticalOffset = 140;
+
+        int leftBound = 0;
+        int rightBound = screenWidth - platformWidth;
         
+        Vector2 currentPosition = new Vector2(screenWidth / 2, screenHeight - 90);
+
         for (int i = 0; i < numberOfPlatforms; i++)
         {
-            _platforms.Add(new Platform(_playerTexture, new Vector2(random.Next(50, 750), random.Next(50, 750))));
+            _platforms.Add(new Platform(_playerTexture, currentPosition));
+
+            int direction = random.Next(2) == 0 ? -1 : 1;
+            float offsetX = random.Next(minHorizontalOffset, maxHorizontalOffset + 1) * direction;
+            float offsetY = -random.Next(minVerticalOffset, maxVerticalOffset + 1);
+
+            currentPosition += new Vector2(offsetX, offsetY);
+            
+            if (currentPosition.X < leftBound)
+                currentPosition.X = leftBound + 10;
+            if (currentPosition.X > rightBound)
+                currentPosition.X = rightBound - 10;
         }
     }
 }
