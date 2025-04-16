@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using TestGame.Entity;
 
 namespace TestGame;
 
@@ -10,13 +11,7 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private Texture2D _playerTexture;
-
-    private const float _gravity = 0.5f;
-    private float _velocityY = 0f;
-    private readonly float _playerSpeed = 5f;
-    private Vector2 _playerPosition = new Vector2(0, 0);
-
-    private readonly int[] _playerSize = [32, 32]; // Vyska, Sirka
+    private Player _player;
 
     public Game1()
     {
@@ -37,6 +32,7 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         _playerTexture = Content.Load<Texture2D>("spritesheet");
+        _player = new Player(_playerTexture, new Vector2(0, 0), 32, 32);
 
         // TODO: use this.Content to load your game content here
     }
@@ -45,6 +41,8 @@ public class Game1 : Game
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
+        
+        _player.Update(GraphicsDevice.Viewport);
 
         // TODO: Add your update logic here
 
@@ -53,24 +51,10 @@ public class Game1 : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
-        KeyboardState keyboardState = Keyboard.GetState();
+        GraphicsDevice.Clear(Color.LightBlue);
         
         _spriteBatch.Begin();
-        
-        _velocityY += _gravity;
-        _playerPosition.Y += _velocityY;
-
-        if (_playerPosition.Y > GraphicsDevice.Viewport.Height - _playerSize[1])
-        {
-            _playerPosition.Y = GraphicsDevice.Viewport.Height - _playerSize[1];
-            _velocityY = 0f;
-        }
-        
-        Rectangle sourceRect = new Rectangle(0, 0, 8, 8);
-        Rectangle destRect = new Rectangle((int) _playerPosition.X, (int) _playerPosition.Y, _playerSize[0], _playerSize[1]);
-        _spriteBatch.Draw(_playerTexture, destRect, sourceRect, Color.White);
-        
+        _player.Draw(_spriteBatch);
         _spriteBatch.End();
 
         // TODO: Add your drawing code here
