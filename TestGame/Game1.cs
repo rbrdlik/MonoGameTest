@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -59,6 +60,12 @@ public class Game1 : Game
         
         _velocityY += _gravity;
         _playerPosition.Y += _velocityY;
+
+        if (_playerPosition.Y > GraphicsDevice.Viewport.Height - _playerSize[1])
+        {
+            _playerPosition.Y = GraphicsDevice.Viewport.Height - _playerSize[1];
+            _velocityY = 0f;
+        }
         
         Rectangle sourceRect = new Rectangle(0, 0, 8, 8);
         Rectangle destRect = new Rectangle((int) _playerPosition.X, (int) _playerPosition.Y, _playerSize[0], _playerSize[1]);
