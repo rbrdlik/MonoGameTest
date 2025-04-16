@@ -66,6 +66,10 @@ public class Player
         {
             _position.X -= _speed;
         }
+        if ((keyboardState.IsKeyDown(Keys.Space) || keyboardState.IsKeyDown(Keys.W)) && _position.Y >= WindowHeight - _size[1])
+        {
+            _velocityY = -_speed * 3f;
+        }
     }
 
     public void Draw(SpriteBatch spriteBatch)
